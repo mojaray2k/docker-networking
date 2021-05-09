@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const axios = require('axios').default;
 const mongoose = require('mongoose');
 
@@ -7,7 +6,10 @@ const Favorite = require('./models/favorite');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.get('/favorites', async (req, res) => {
   const favorites = await Favorite.find();
@@ -68,7 +70,7 @@ app.get('/people', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://localhost:27017/swfavorites',
+  'mongodb://host.docker.internal:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
